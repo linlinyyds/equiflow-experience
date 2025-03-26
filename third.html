@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equiflow Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+        .timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe src="https://xjjxia.github.io/Orbit/"></iframe>
+
+    <div class="timer" id="timer"></div>
+
+    <script>
+        function getQueryParam(name) {
+            let params = new URLSearchParams(window.location.search);
+            return params.get(name) || "";
+        }
+
+        let timeLeft = parseInt(getQueryParam("time")) || 30; // 默认30秒
+        let timerElement = document.getElementById("timer");
+
+        function updateTimer() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerElement.innerText = `Time Left: ${minutes}m ${seconds}s`;
+
+            if (timeLeft <= 0) {
+                window.location.href = "fourth.html";
+            } else {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Equiflow</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background: gray;
+            margin-top: 20px;
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            transition: width 2s linear;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="welcomeText">Welcome to Equiflow</h2>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <script>
+        function getQueryParam(name) {
+            let params = new URLSearchParams(window.location.search);
+            return params.get(name) || "";
+        }
+
+        let userName = getQueryParam("name");
+        let minutes = parseInt(getQueryParam("minutes"));
+        let seconds = parseInt(getQueryParam("seconds"));
+        let totalSeconds = minutes * 60 + seconds;
+
+        document.getElementById("welcomeText").innerText = `Welcome ${userName} to Equiflow`;
+
+        let progress = document.getElementById("progress");
+        let progressTime = 3000; // 进度条3秒加载完毕
+        progress.style.width = "100%";
+
+        setTimeout(() => {
+            window.location.href = `third.html?time=${totalSeconds}`;
+        }, progressTime);
+    </script>
+
+</body>
+</html>
