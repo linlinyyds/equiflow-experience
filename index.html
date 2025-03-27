@@ -3,121 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equiflow Login</title>
+    <title>Equiflow Experience</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
         }
+
         body {
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            background: black;
+            font-family: Arial, sans-serif;
+            text-align: center;
             color: white;
+            overflow: hidden;
         }
+
+        /* 背景 Spline */
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* 输入框容器 */
         .container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(195, 195, 195, 0.113); /* 20% 透明度 */
             padding: 20px;
             border-radius: 10px;
-            text-align: center;
-            z-index: 2; /* 确保表单在 Spline 之上 */
-            width: 320px;
+            backdrop-filter: blur(5px);
         }
-        input, select, button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* 统一间距 */
+            margin-bottom: 15px;
         }
+
+        label {
+            font-size: 18px;
+        }
+
         input, select {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            width: 250px;
+            height: 35px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
         }
+
+        /* 确认按钮 */
         button {
+            width: 260px;
+            height: 40px;
             background: #4CAF50;
             color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
+
         button:hover {
             background: #45a049;
         }
-        .spline-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+
     </style>
 </head>
 <body>
-
-    <!-- 表单输入框，完全居中 -->
-    <div class="container">
-        <h2>Enter Your Information</h2>
-
-        <label>Full Name:</label>
-        <input type="text" id="userName" required placeholder="Enter your name">
-
-        <label>Company Name:</label>
-        <input type="text" id="companyName" required placeholder="Must be 'Equiflow'">
-
-        <label>Expected Duration:</label>
-        <div style="display: flex; gap: 10px;">
-            <select id="minutes">
-                <option value="0">0 min</option>
-                <option value="1">1 min</option>
-                <option value="2">2 min</option>
-                <option value="3">3 min</option>
-                <option value="4">4 min</option>
-                <option value="5">5 min</option>
-                <option value="10">10 min</option>
-                <option value="15">15 min</option>
-            </select>
-            <select id="seconds">
-                <option value="0">0 sec</option>
-                <option value="10">10 sec</option>
-                <option value="20">20 sec</option>
-                <option value="30">30 sec</option>
-                <option value="40">40 sec</option>
-                <option value="50">50 sec</option>
-                <option value="60">60 sec</option>
-            </select>
-        </div>
-
-        <button onclick="validateAndProceed()">Confirm</button>
+    <!-- 背景 -->
+    <div class="background">
+        <iframe src="https://my.spline.design/particles-2f5a8ff7bb892b10da5237a557952d56/" frameborder="0" width="100%" height="100%"></iframe>
     </div>
 
-    <!-- Spline 3D 背景 -->
-    <div class="spline-container">
-        <iframe src='https://my.spline.design/particles-2f5a8ff7bb892b10da5237a557952d56/' 
-            frameborder='0' width='100%' height='100%'></iframe>
+    <!-- 表单 -->
+    <div class="container">
+        <form id="userForm">
+            <div class="form-group">
+                <label for="name">Enter your name:</label>
+                <input type="text" id="name" placeholder="Your Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="company">Enter company name:</label>
+                <input type="text" id="company" placeholder="Equiflow" required>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Expected duration:</label>
+                <div style="display: flex; justify-content: center; gap: 10px; width: 250px;">
+                    <select id="minutes" style="width: 80px;">
+                        <option value="0" selected>0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                    min
+                    <select id="seconds" style="width: 80px;">
+                        <option value="0" selected>0</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                    </select>
+                    sec
+                </div>
+            </div>
+
+            <button type="button" onclick="validateAndProceed()">Confirm</button>
+        </form>
     </div>
 
     <script>
         function validateAndProceed() {
-            let name = document.getElementById("userName").value.trim();
-            let company = document.getElementById("companyName").value.trim();
+            let name = document.getElementById("name").value.trim();
+            let company = document.getElementById("company").value.trim();
             let minutes = document.getElementById("minutes").value;
             let seconds = document.getElementById("seconds").value;
 
-            if (company !== "Equiflow" && company !== "equiflow") {
-                alert("Please enter the correct company name. Otherwise, you cannot proceed.");
+            if (company.toLowerCase() !== "equiflow") {
+                alert("Please enter the correct company name to proceed.");
                 return;
             }
 
-            let url = `progress.html?name=${encodeURIComponent(name)}&minutes=${minutes}&seconds=${seconds}`;
-            window.location.href = url;
+            // 跳转到进度条页面，并传递姓名、时长
+            window.location.href = `progress.html?name=${encodeURIComponent(name)}&minutes=${minutes}&seconds=${seconds}`;
         }
     </script>
-
 </body>
 </html>
+

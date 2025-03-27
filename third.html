@@ -3,60 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equiflow Experience</title>
+    <title>Third Page</title>
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        #countdown.warning {
+            color: orange;
+        }
+        #countdown.critical {
+            color: pink;
         }
         iframe {
             width: 100vw;
             height: 100vh;
             border: none;
         }
-        .timer {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            font-size: 18px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
 
-    <iframe src="https://xjjxia.github.io/Orbit/"></iframe>
+<!-- 右上角的 Equiflow 提示和倒计时 -->
+<div class="overlay">
+    <div>You are now in Equiflow</div>
+    <div id="countdown">Time left: 60</div>
+</div>
 
-    <div class="timer" id="timer"></div>
+<!-- GitHub Pages 链接 -->
+<iframe src="https://xjjxia.github.io/Orbit/"></iframe>
 
-    <script>
-        function getQueryParam(name) {
-            let params = new URLSearchParams(window.location.search);
-            return params.get(name) || "";
+<script>
+    let countdownElement = document.getElementById('countdown');
+    let timeLeft = 60; // 设置倒计时秒数
+
+    function updateCountdown() {
+        countdownElement.textContent = `Time left: ${timeLeft}s`;
+        
+        // 更改颜色逻辑
+        if (timeLeft <= 10) {
+            countdownElement.classList.add('critical');
+            countdownElement.classList.remove('warning');
+        } else if (timeLeft <= 30) {
+            countdownElement.classList.add('warning');
+            countdownElement.classList.remove('critical');
         }
 
-        let timeLeft = parseInt(getQueryParam("time")) || 30; // 默认30秒
-        let timerElement = document.getElementById("timer");
+        timeLeft--;
 
-        function updateTimer() {
-            let minutes = Math.floor(timeLeft / 60);
-            let seconds = timeLeft % 60;
-            timerElement.innerText = `Time Left: ${minutes}m ${seconds}s`;
-
-            if (timeLeft <= 0) {
-                window.location.href = "fourth.html";
-            } else {
-                timeLeft--;
-                setTimeout(updateTimer, 1000);
-            }
+        if (timeLeft < 0) {
+            window.location.href = "fourth.html"; // 倒计时结束后跳转到第四页
         }
+    }
 
-        updateTimer();
-    </script>
+    setInterval(updateCountdown, 1000); // 每秒更新倒计时
+</script>
 
 </body>
 </html>
