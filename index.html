@@ -25,7 +25,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -1; /* 保证背景在最底层 */
         }
 
         /* 输入框容器 */
@@ -78,12 +78,69 @@
             background: #45a049;
         }
 
+        /* 弹窗 */
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgb(0, 0, 0);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            justify-content: center; /* 垂直居中 */
+            align-items: center; /* 水平居中 */
+            text-align: center; /* 确保文本居中 */
+            z-index: 9999; /* 设置为非常高的层级 */
+            width: 80%; /* 增大宽度 */
+            max-width: 500px; /* 限制最大宽度 */
+            height: 400px; /* 增加高度 */
+        }
+
+        #popup p {
+            margin-top: 60px; 
+            margin-bottom: 80px;/* 给文本和按钮之间留出空间 */
+            font-size: 20px; /* 增加字体大小 */
+            line-height: 1.5; /* 增加行间距 */
+        }
+
+        #popup button {
+            background-color: #00a85f;
+            margin-top: 60px;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 5px;
+
+            /* 使按钮文本居中 */
+            display: inline-flex;      /* 让按钮行为像行内元素 */
+            justify-content: center;   /* 水平居中 */
+            align-items: center;       /* 垂直居中 */
+
+            /* 使按钮居中 */
+            width: auto;               /* 根据内容调整宽度 */
+            margin: 0 auto;            /* 自动左右外边距 */
+        }
+
+        #popup button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <!-- 背景 -->
     <div class="background">
         <iframe src="https://my.spline.design/particles-2f5a8ff7bb892b10da5237a557952d56/" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="popup">
+        <p>Welcome to equiflow, <br>getting you into high performance mode。</p>
+        <button onclick="closePopup()">Enter</button>
     </div>
 
     <!-- 表单 -->
@@ -100,7 +157,7 @@
             </div>
 
             <div class="form-group">
-                <label for="duration">Expected duration:</label>
+                <label for="duration">Expected Usage:</label>
                 <div style="display: flex; justify-content: center; gap: 10px; width: 250px;">
                     <select id="minutes" style="width: 80px;">
                         <option value="0" selected>0</option>
@@ -131,6 +188,17 @@
     </div>
 
     <script>
+        // 弹窗显示函数
+        window.onload = function() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // 关闭弹窗
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        // 表单验证和跳转
         function validateAndProceed() {
             let name = document.getElementById("name").value.trim();
             let company = document.getElementById("company").value.trim();
@@ -142,10 +210,14 @@
                 return;
             }
 
-            // 跳转到进度条页面，并传递姓名、时长
-            window.location.href = `progress.html?name=${encodeURIComponent(name)}&minutes=${minutes}&seconds=${seconds}`;
+            // 将选择的时间转换为总秒数并存储到 localStorage
+            let totalTime = parseInt(minutes) * 60 + parseInt(seconds);
+            localStorage.setItem("totalTime", totalTime);  // 存储总时间
+
+            // 跳转到倒计时页面，并传递姓名、时长
+            localStorage.setItem("userName", name);
+            window.location.href = `progress.html?minutes=${minutes}&seconds=${seconds}`;
         }
     </script>
 </body>
 </html>
-

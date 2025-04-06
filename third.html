@@ -3,73 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Third Page</title>
+    <title>Equiflow Experience</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
             overflow: hidden;
-        }
-        .overlay {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 0, 0, 0.3);
+            font-family: Arial, sans-serif;
             color: white;
-            padding: 10px 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 5px;
         }
-        #countdown.warning {
-            color: orange;
-        }
-        #countdown.critical {
-            color: pink;
+        .countdown {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 20px;
+            transition: color 0.5s ease;
         }
         iframe {
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             border: none;
+            pointer-events: auto;
+            touch-action: auto;
         }
     </style>
 </head>
 <body>
 
-<!-- 右上角的 Equiflow 提示和倒计时 -->
-<div class="overlay">
-    <div>You are now in Equiflow</div>
-    <div id="countdown">Time left: 60</div>
-</div>
+    <div class="countdown" id="countdown">Time Left: <span id="timer">0:00</span></div>
 
-<!-- GitHub Pages 链接 -->
-<iframe src="https://xjjxia.github.io/Orbit/"></iframe>
+    <iframe 
+        src="https://xjjxia.github.io/Orbit/" 
+        allow="fullscreen; gamepad; gyroscope; accelerometer"
+    ></iframe>
 
-<script>
-    let countdownElement = document.getElementById('countdown');
-    let timeLeft = 60; // 设置倒计时秒数
+    <script>
+        // 获取第一个页面输入的时间
+        let totalSeconds = parseInt(localStorage.getItem("totalTime")) || 60;
+        let speedFactor = 1.5; // 1.5倍加速
+        let timeInterval = 1000 / speedFactor; // 调整时间间隔为 1.5倍速
 
-    function updateCountdown() {
-        countdownElement.textContent = `Time left: ${timeLeft}s`;
-        
-        // 更改颜色逻辑
-        if (timeLeft <= 10) {
-            countdownElement.classList.add('critical');
-            countdownElement.classList.remove('warning');
-        } else if (timeLeft <= 30) {
-            countdownElement.classList.add('warning');
-            countdownElement.classList.remove('critical');
+        function updateTimer() {
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+            document.getElementById("timer").textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            // 颜色变化（倒计时低于 10s 变橙色，3s 变粉色）
+            let countdownElement = document.getElementById("countdown");
+            if (totalSeconds <= 3) {
+                countdownElement.style.color = "pink";
+            } else if (totalSeconds <= 10) {
+                countdownElement.style.color = "orange";
+            }
+
+            // 倒计时结束跳转到第四页
+            if (totalSeconds <= 0) {
+                window.location.href = "feedback.html";
+            } else {
+                totalSeconds--;
+                setTimeout(updateTimer, timeInterval); // 使用加速后的时间间隔
+            }
         }
 
-        timeLeft--;
-
-        if (timeLeft < 0) {
-            window.location.href = "fourth.html"; // 倒计时结束后跳转到第四页
-        }
-    }
-
-    setInterval(updateCountdown, 1000); // 每秒更新倒计时
-</script>
+        // 开始倒计时
+        updateTimer();
+    </script>
 
 </body>
 </html>

@@ -58,7 +58,7 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        
+
         button:hover {
             background: #cccccc;
         }
@@ -68,44 +68,43 @@
 <body>
 
 <div class="container">
-    <div id="welcome-text">Welcome <span id="username">***</span> to Equiflow</div>
+    <div id="welcome-text">Welcome <span id="username">***</span> to Equiflow<br>Try moving the mouse to interact</div>
     <div class="progress-bar">
         <div class="progress" id="progress"></div>
     </div>
     <div class="button-container" id="button-container">
-        <button onclick="goToNextPage()">Start exploring</button>
+        <button onclick="goToNextPage()">Start timing</button>
     </div>
 </div>
 
 <script>
-    // Get the username from URL parameters
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('name') || '***';
+    // 获取存储在 localStorage 中的姓名
+    const username = localStorage.getItem("userName") || '***';  // 如果没有存储过，则显示默认值 '***'
     document.getElementById('username').textContent = username;
 
-    // Progress bar animation
+    // 进度条动画
     let progressBar = document.getElementById("progress");
     let buttonContainer = document.getElementById("button-container");
     let progress = 0;
 
     function updateProgress() {
-    if (progress < 30) {
-        progress += 1;
-    } else if (progress < 50) {
-        setTimeout(() => { progress += 1; updateProgress(); }, 200);
-        return;
-    } else {
-        progress += 1; // 直接继续增长，取消 80% 停顿
-    }
+        if (progress < 30) {
+            progress += 1;
+        } else if (progress < 50) {
+            setTimeout(() => { progress += 1; updateProgress(); }, 200);
+            return;
+        } else {
+            progress += 1; // 直接继续增长，取消 80% 停顿
+        }
 
-    progressBar.style.width = progress + "%";
+        progressBar.style.width = progress + "%";
 
-    if (progress < 100) {
-        setTimeout(updateProgress, 30);
-    } else {
-        buttonContainer.style.display = "block"; // 进度条满后显示按钮
+        if (progress < 100) {
+            setTimeout(updateProgress, 30);
+        } else {
+            buttonContainer.style.display = "block"; // 进度条满后显示按钮
+        }
     }
-}
 
     setTimeout(updateProgress, 500);
 
@@ -116,3 +115,4 @@
 
 </body>
 </html>
+
