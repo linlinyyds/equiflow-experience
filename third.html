@@ -10,6 +10,7 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
             color: white;
+            touch-action: none; /* 禁止默认的触摸行为 */
         }
         .countdown {
             position: absolute;
@@ -25,8 +26,8 @@
             width: 100%;
             height: 100vh;
             border: none;
-            pointer-events: auto;
-            touch-action: auto;
+            pointer-events: auto; /* 确保 iframe 本身能接收触控事件 */
+            touch-action: none;   /* 禁止默认的触摸行为，允许自定义 */
         }
     </style>
 </head>
